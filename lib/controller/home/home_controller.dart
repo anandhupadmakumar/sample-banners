@@ -7,8 +7,6 @@ import 'package:sample_api/core/constants/http_urls.dart';
 import 'package:sample_api/model/banner_model.dart';
 
 class HomeController extends GetxController {
- 
-
   @override
   void onReady() {
     getData();
@@ -23,7 +21,14 @@ class HomeController extends GetxController {
     final response = await dio.get('$baseUrl$getBanner');
 
     final datas = jsonDecode(response.toString());
-    bannerData = datas['Data'].map((e) => BannerData.fromJson(e)).toList();
+
+    if (datas['status_code'] == true) {
+      bannerData = datas['Data'].map((e) => BannerData.fromJson(e)).toList();
+      print(datas);
+    } else {
+      print(datas);
+      bannerData = null;
+    }
 
     update();
   }
